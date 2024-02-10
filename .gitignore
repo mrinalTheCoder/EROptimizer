@@ -1,5 +1,6 @@
-triage.csv
+training/triage.csv
 .idea
 .vscode
 .ipynb_checkpoints
 .virtual_documents
+training/cleaned_data.csv
