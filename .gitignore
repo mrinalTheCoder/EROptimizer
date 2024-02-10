@@ -9,3 +9,4 @@ node_modules
 .virtual_documents
 training/cleaned_data.csv
 training/meds_admission.keras
+react-flask-app/api/llm_results

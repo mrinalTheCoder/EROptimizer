@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  const [currentTime, setCurrentTime] = useState(0);
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ClientComponent from './Components/Client/ClientComponent';
+import ServerComponent from './Components/Server/ServerComponent';
 
 
-
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>User Voice Recording Interface</p>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/client" element={<ClientComponent />} />
+        <Route path="/server" element={<ServerComponent />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
