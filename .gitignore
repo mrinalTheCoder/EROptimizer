@@ -9,3 +9,5 @@ node_modules
 .virtual_documents
 training/cleaned_data.csv
 training/meds_admission.keras
+OpenAIEmbeddings/output.json
+OpenAIEmbeddings/.env
