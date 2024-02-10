@@ -1,3 +1,5 @@
 triage.csv
 .idea
 .vscode
+.ipynb_checkpoints
+.virtual_documents
