@@ -17,8 +17,8 @@ pmh_cols = list(map(lambda x:x[:-1], pmh_cols))
 # outputList = []
 
 model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-cc_embeddings = np.load("OpenAILLM/cc_embeddings.npy")
-pmh_embeddings = np.load("OpenAILLM/pmh_embeddings.npy")
+cc_embeddings = np.load("OpenAIEmbeddings/cc_embeddings.npy")
+pmh_embeddings = np.load("OpenAIEmbeddings/pmh_embeddings.npy")
 def col_embeddings_to_file(sentences, path):
     embeddings = model.encode(sentences)
     np.save(path, embeddings)
