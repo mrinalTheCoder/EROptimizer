@@ -46,36 +46,33 @@ const Index = () => {
         const audioUrl = URL.createObjectURL(blob);
         setBlobURL(audioUrl);
         setIsRecording(false);
-        saveRecording(blob);
+        sendRecording(blob);
       })
       .catch((error) => {
         console.error('Error:', error);
       });
   };
 
-  const saveRecording = async (blob) => {
-    // Specify the custom file name
-    const fileName = 'recording.mp3';
-
+  const sendRecording = async (blob) => {
     try {
-        // Request access to the file system
-        const fileHandle = await window.showSaveFilePicker();
+      const formData = new FormData();
+      formData.append('audioFile', blob);
 
-        // Create a writable stream to the file
-        const writable = await fileHandle.createWritable();
+      const response = await fetch('http://127.0.0.1:5000/api/transcribe', {
+        method: 'POST',
+        body: formData
+      });
 
-        // Write the blob data to the file
-        await writable.write(blob);
-
-        // Close the writable stream
-        await writable.close();
-
-        console.log('File saved successfully.');
-    } catch (err) {
-        console.error('Error saving file:', err);
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Transcription:', data.transcript);
+      } else {
+        console.error('Failed to transcribe audio');
+      }
+    } catch (error) {
+      console.error('Error transcribing audio:', error);
     }
-};
-
+  };
 
   return (
     <React.StrictMode>
