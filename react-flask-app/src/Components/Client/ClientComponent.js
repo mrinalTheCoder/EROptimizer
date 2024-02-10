@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MicRecorder from 'mic-recorder-to-mp3';
+import './ClientComponenet.css'; // Add this line
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
 
@@ -77,14 +78,14 @@ const ClientComponent = () => {
   };
 
   return (
-    <div>
-      <button onClick={startRecording} disabled={isRecording || isBlocked}>
+    <div className="client-container">
+      <button className="client-button" onClick={startRecording} disabled={isRecording || isBlocked}>
         Record
       </button>
-      <button onClick={stopRecording} disabled={!isRecording}>
+      <button className="client-button" onClick={stopRecording} disabled={!isRecording}>
         Stop
       </button>
-      <audio src={blobURL} controls="controls" />
+      <audio className="audio-player" src={blobURL} controls="controls" />
     </div>
   );
 };

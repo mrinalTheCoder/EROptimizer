@@ -12,8 +12,8 @@ CORS(app)
 @app.route('/api/transcribe', methods=['POST'])
 def transcribe_audio():
     try:
-        os.makedirs("llm_results", exist_ok=True)
-        os.chdir("llm_results")
+        os.makedirs("whisper_out", exist_ok=True)
+        os.chdir("whisper_out")
 
 
         audio_file = request.files['audioFile']
