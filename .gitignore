@@ -1,7 +1,11 @@
-triage.csv
+training/triage.csv
 .idea
 .vscode
 venv
 __pycache__
 .DS_Store
 node_modules
+.ipynb_checkpoints
+.virtual_documents
+training/cleaned_data.csv
+training/meds_admission.keras
