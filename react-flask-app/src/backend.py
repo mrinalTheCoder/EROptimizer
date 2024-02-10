@@ -1,15 +1,8 @@
-import time 
 from flask import Flask, request, jsonify
 import subprocess
 import os
-from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
-
-@app.route('/time')
-def get_current_time():
-    return {'time': time.time()}
 
 @app.route('/api/transcribe', methods=['POST'])
 def transcribe_audio():
@@ -18,7 +11,6 @@ def transcribe_audio():
         save_dir = request.form.get('saveDir', 'recordings')
         os.makedirs(save_dir, exist_ok=True)
         audio_path = os.path.join(save_dir, 'audio.mp3')
-        print(save_dir)
         audio_file.save(audio_path)
         
         # Invoke Whisper AI
@@ -35,3 +27,7 @@ def transcribe_audio():
     except Exception as e:
         print("Error:", e)
         return jsonify({'error': 'Failed to transcribe audio'}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5001)
+
