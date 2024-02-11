@@ -2,6 +2,7 @@ training/triage.csv
 .idea
 .vscode
 venv
+.venv
 __pycache__
 .DS_Store
 node_modules

@@ -45,6 +45,9 @@ def transcribe_audio():
             transcript = file.read()
 
         transcript = transcript.replace("\n", " ").replace("\r", " ").replace("\t", " ")
+
+        with open(transcript_path, "w") as file:
+            file.write(json.dumps({"callid": subdir, "transcript": transcript}))
         print("Transcript:", transcript)
         info = transcript_parser.gpt_response(transcript)
         print("Info:", info)
@@ -60,7 +63,8 @@ def transcribe_audio():
         print("triage:", triage)
         # Write the callid and transcript to a json
 
-        med_input = [int(info["age"]) / 100]
+        age = int(''.join([i for i in info["age"] if i.isdigit()]))
+        med_input = [age / 100]
         print(med_input)
         med_input.append(1 if info["gender"] == "male" else 0)
         med_input = med_input + cc_list.tolist() + pmh_list.tolist()
@@ -73,7 +77,7 @@ def transcribe_audio():
             file.write(json.dumps({
                 "callid": subdir,
                 "transcript": transcript,
-                "age": int(info["age"]),
+                "age": age,
                 "gender": info["gender"],
                 "complaints": [x for x in out if x[:3] == "cc_"],
                 "history": [x for x in out if x[:3] != "cc_"],

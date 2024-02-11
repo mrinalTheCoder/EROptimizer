@@ -29,6 +29,6 @@ typing_extensions==4.9.0
 urllib3==2.2.0
 Werkzeug==3.0.1
 zipp==3.17.0
-openai
-sentence_transformers
-tensorflow
+openai==1.12.0
+sentence_transformers==2.3.1
+tensorflow==2.15.0
