@@ -62,7 +62,7 @@ def list_transcripts():
         base_dir = "whisper_out"
         callids = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d))]
         transcripts = []
-
+        callids.sort()
         for callid in callids:
             transcript_path = os.path.join(base_dir, callid, "transcript.json")
             if os.path.exists(transcript_path):
