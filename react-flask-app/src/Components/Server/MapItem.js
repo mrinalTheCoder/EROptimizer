@@ -66,7 +66,9 @@ const MapItem = () => {
   return (
     <div className="map-container" style={{ width: '100%', height: '100px' }}>
       <div ref={mapRef} style={{ width: '100%', height: '80%' }} />
-      {transportationTime && <p>Transportation time: {transportationTime}</p>}
+        <div className="location-container">
+          <p style={{ fontFamily: 'monospace', fontWeight: 'bold' }}>Time to arrival: {transportationTime}</p>
+         </div>
     </div>
   );  
 };
