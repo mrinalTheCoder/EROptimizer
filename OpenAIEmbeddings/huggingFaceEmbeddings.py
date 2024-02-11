@@ -1,11 +1,27 @@
 import numpy as np
+import json
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 
 gender = "Male"
-age = 25
-current_complaints = ["headache", "heart attack"]
-past_medical_history = ["Migraines", "high blood pressure"]
+age = 19
+
+json_file_path = "/Users/kaustubhbhal/Hacklytics/EROptimizer/OpenAIEmbeddings/output.json"
+
+with open(json_file_path, "r") as file:
+    json_data = json.load(file) 
+
+complaints_str = json_data["Complaints"]
+past_medical_history_str = json_data["Past Medical History"]
+
+current_complaints = [complaint.strip().lower() for complaint in complaints_str.split(",")]
+past_medical_history = [history.strip().lower() for history in past_medical_history_str.split(",")]
+
+#print("Current Complaints:", current_complaints)
+#print("Past Medical History:", past_medical_history)
+
+#current_complaints = ["broken left arm"]
+#past_medical_history = ["Asthma", "Obesity"]
 
 with open("training/cc_cols.txt", "r") as f:
     cc_cols = f.readlines()
@@ -31,15 +47,15 @@ def compute_similarity(user_cc, user_pmh):
     output_pmhs = np.zeros(len(pmh_embeddings))
     for i in range(len(cc_embeddings)):
         for j in range(len(user_cc_embeddings)):
-            sim_score = np.dot(user_cc_embeddings[j], cc_embeddings[i]) / (np.linalg.norm(user_cc_embeddings) * np.linalg.norm(cc_embeddings[i]))
-            if(sim_score > 0.27):
+            sim_score = np.dot(user_cc_embeddings[j], cc_embeddings[i]) / (np.linalg.norm(user_cc_embeddings[j]) * np.linalg.norm(cc_embeddings[i]))
+            if(sim_score > 0.5):
                 output_ccs[i] = 1
                 output_list.append(cc_cols[i])
     
     for i in range(len(pmh_embeddings)):
         for j in range(len(user_pmh_embeddings)):
-            sim_score = np.dot(user_pmh_embeddings[j], pmh_embeddings[i]) / (np.linalg.norm(user_pmh_embeddings) * np.linalg.norm(pmh_embeddings[i]))
-            if(sim_score > 0.27):
+            sim_score = np.dot(user_pmh_embeddings[j], pmh_embeddings[i]) / (np.linalg.norm(user_pmh_embeddings[j]) * np.linalg.norm(pmh_embeddings[i]))
+            if(sim_score > 0.5):
                 output_pmhs[i] = 1
                 output_list.append(pmh_cols[i])
     
@@ -60,6 +76,3 @@ def compute_similarity(user_cc, user_pmh):
 
 # col_embeddings_to_file(cc_cols, "cc_embeddings.npy")
 # col_embeddings_to_file(pmh_cols, "pmh_embeddings.npy")
-
-_, __, out = compute_similarity(current_complaints, past_medical_history)
-print(out)
