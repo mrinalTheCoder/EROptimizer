@@ -12,3 +12,4 @@ training/meds_admission.keras
 OpenAIEmbeddings/output.json
 OpenAIEmbeddings/.env
 react-flask-app/api/whisper_out
+react-flask-app/api/.env

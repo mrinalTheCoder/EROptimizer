@@ -4,6 +4,7 @@ import os
 from flask_cors import CORS
 from flask_cors import cross_origin
 import json
+import transcript_parser
 
 app = Flask(__name__)
 CORS(app)
@@ -45,12 +46,23 @@ def transcribe_audio():
 
         transcript = transcript.replace("\n", " ").replace("\r", " ").replace("\t", " ")
         print("Transcript:", transcript)
+        info = transcript_parser.gpt_response(transcript)
+        print("Info:", info)
 
+        complaints_str = info["complaints"]
+        past_medical_history_str = info["past medical history"]
+        current_complaints = [complaint.strip().lower() for complaint in complaints_str.split(",")]
+        past_medical_history = [history.strip().lower() for history in past_medical_history_str.split(",")]
+        
+        ccs, pmhs, out = transcript_parser.compute_similarity(current_complaints, past_medical_history)
+        print(ccs)
+        print(pmhs)
+        print(out)
         # Write the callid and transcript to a json
         with open(transcript_path, "w") as file:
             file.write(json.dumps({"callid": subdir, "transcript": transcript}))
 
-        return jsonify({'transcript': transcript}), 200
+        return jsonify({'callid': subdir}), 200
     except Exception as e:
         print("Error:", e)
         return jsonify({'error': 'Failed to transcribe audio'}), 500
