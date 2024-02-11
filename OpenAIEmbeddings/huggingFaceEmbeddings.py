@@ -8,11 +8,24 @@ age = 19
 
 json_file_path = "/Users/kaustubhbhal/Hacklytics/EROptimizer/OpenAIEmbeddings/output.json"
 
+# Read JSON data from the file
+with open(json_file_path, "r") as file:
+    data = json.load(file)
+
+# Create a new dictionary with lowercase keys and values
+lowercase_data = {}
+for key, value in data.items():
+    lowercase_data[key.lower()] = value.lower() if isinstance(value, str) else value
+
+# Write the modified JSON data back to the file
+with open(json_file_path, "w") as file:
+    json.dump(lowercase_data, file, indent=4)
+
 with open(json_file_path, "r") as file:
     json_data = json.load(file) 
 
-complaints_str = json_data["Complaints"]
-past_medical_history_str = json_data["Past Medical History"]
+complaints_str = json_data["complaints"]
+past_medical_history_str = json_data["past medical history"]
 
 current_complaints = [complaint.strip().lower() for complaint in complaints_str.split(",")]
 past_medical_history = [history.strip().lower() for history in past_medical_history_str.split(",")]

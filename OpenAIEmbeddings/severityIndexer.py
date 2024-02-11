@@ -60,8 +60,8 @@ for word in out:
     else:
         other_words.append(word)
     
-#print(cc_words)
-#print(other_words)
+print(cc_words)
+print(other_words)
 
 cc_indices = [cc_cols.index(word) for word in cc_words]
 pmh_indices = [pmh_cols.index(word) for word in other_words]
