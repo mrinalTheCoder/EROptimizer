@@ -30,7 +30,7 @@ for i in range(len(sev_words)):
     for j in range(pmh_embeddings.shape[0]):
         pmh_sev_scores[j][i] = np.dot(pmh_embeddings[j], sev_encodings[i]) / (np.linalg.norm(pmh_embeddings[j]) * np.linalg.norm(sev_encodings[i]))
 
-cc_sev_scores = list(np.mean(cc_sev_scores, axis=1))
+cc_sev_scores = list(np.max(cc_sev_scores, axis=1))
 pmh_sev_scores = list(np.mean(pmh_sev_scores, axis=1))
 
 def get_max_cc_score(cc_indices):
@@ -51,14 +51,14 @@ def get_avg_pmh_score(pmh_indices):
 
 _, __, out = compute_similarity(current_complaints, past_medical_history)
 
-cc_words = []
-other_words = []
+cc_words = ["cc_breathingdifficulty", "cc_breathingproblem"]
+other_words = ["asthma"]
 
-for word in out:
-    if word.startswith('cc_'):
-        cc_words.append(word)
-    else:
-        other_words.append(word)
+# for word in out:
+#     if word.startswith('cc_'):
+#         cc_words.append(word)
+#     else:
+#         other_words.append(word)
     
 print(cc_words)
 print(other_words)
@@ -84,21 +84,23 @@ pmh_indices = [pmh_cols.index(word) for word in other_words]
 cc_max = get_max_cc_score(cc_indices)
 pmh_avg = get_avg_pmh_score(pmh_indices)
 
+print(cc_max)
+
 
 if(cc_max > pmh_avg):
     triage_index = cc_max
 else:
     triage_index = (cc_max + pmh_avg)/2
 
-#print(triage_index)
+print(triage_index)
 
-if triage_index > 0.4:
+if triage_index > 0.5:
     print("Level 1")
-elif triage_index > 0.3:
+elif triage_index > 0.43:
     print("Level 2")
-elif triage_index > 0.2:
+elif triage_index > 0.334:
     print("Level 3")
-elif triage_index > 0.1:
+elif triage_index > 0.2:
     print("Level 4")
 else:
     print("Level 5")
