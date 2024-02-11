@@ -5,11 +5,12 @@ import "./ServerSideComponent.css";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import "./ServerSideComponent.css";
 
 const ServerComponent = () => {
   const [calls, setCalls] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeCallerID, setActiveCallerID] = useState(null); // New state for active caller ID
+  const [activeCallerID, setActiveCallerID] = useState(null);
 
   const fetchCalls = async () => {
     try {
