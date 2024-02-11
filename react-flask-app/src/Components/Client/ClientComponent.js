@@ -57,8 +57,6 @@ const ClientComponent = () => {
     try {
       const formData = new FormData();
       formData.append('audioFile', blob);
-      const audioName = Math.random().toString(36).substring(7);
-      formData.append('audioName', audioName);
 
       const response = await fetch('http://127.0.0.1:5000/api/transcribe', {
         method: 'POST',

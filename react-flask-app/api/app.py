@@ -14,44 +14,41 @@ CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
 @cross_origin()
 def transcribe_audio():
     try:
-        os.makedirs("whisper_out", exist_ok=True)
-        os.chdir("whisper_out")
+        base_dir = "whisper_out"
+        os.makedirs(base_dir, exist_ok=True)
 
+        num_dirs = sum(os.path.isdir(os.path.join(base_dir, d)) for d in os.listdir(base_dir))
+        subdir = f"Call-{num_dirs:02}"
+        subdir_path = os.path.join(base_dir, subdir)
+        os.makedirs(subdir_path, exist_ok=True)
+        
+
+        audio_file_path = os.path.join(subdir_path, "audio.mp3")
+        transcript_path = os.path.join(subdir_path, "transcript.json")
+
+
+        with open(transcript_path, "w") as file:
+            file.write(json.dumps({"callid": subdir, "transcript": "in progress..."}))
 
         audio_file = request.files['audioFile']
-        subdir = request.form['audioName']
+        audio_file.save(audio_file_path)
+        print(audio_file_path)
 
-        os.makedirs(subdir, exist_ok=True)
-        os.chdir(subdir)
+        # Invoke Whisper AI
+        command = f'whisper audio.mp3 --model medium.en'
+        result = subprocess.run(command, shell=True, cwd=subdir_path, capture_output=True, text=True)
 
-        
-        
-
-        audio_file.save("audio.mp3")
-        
-        # Invoke Whisper AI 
-        # We should consider using command more similar to this: https://github.com/openai/whisper#python-usage
-       
-        command = f'whisper ./audio.mp3 --model medium.en'
-        result = subprocess.run(command, shell=True, capture_output=True, text=True)
-        #load transcript from audio.txt
-        with open("audio.txt", "r") as file:
+        # Assume the transcript is written to 'audio.txt' by the above command
+        audio_txt_path = os.path.join(subdir_path, "audio.txt")
+        with open(audio_txt_path, "r") as file:
             transcript = file.read()
 
-        transcript = transcript.replace("\n", " ")
-        transcript = transcript.replace("\r", " ")
-        transcript = transcript.replace("\t", " ")
-
+        transcript = transcript.replace("\n", " ").replace("\r", " ").replace("\t", " ")
         print("Transcript:", transcript)
 
-        #write the callid and transcript to a json
-        with open("transcript.json", "w") as file:
-            file.write('{"callid": ' + '"' + subdir + '"' + ', "transcript": ' + '"' + transcript + '"' + '}')
-
-        os.chdir("../..")
-        
-
-
+        # Write the callid and transcript to a json
+        with open(transcript_path, "w") as file:
+            file.write(json.dumps({"callid": subdir, "transcript": transcript}))
 
         return jsonify({'transcript': transcript}), 200
     except Exception as e:
