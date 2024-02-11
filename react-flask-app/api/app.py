@@ -54,13 +54,32 @@ def transcribe_audio():
         current_complaints = [complaint.strip().lower() for complaint in complaints_str.split(",")]
         past_medical_history = [history.strip().lower() for history in past_medical_history_str.split(",")]
         
-        out = transcript_parser.compute_similarity(current_complaints, past_medical_history)
+        cc_list, pmh_list, out = transcript_parser.compute_similarity(current_complaints, past_medical_history)
         print(out)
         triage = transcript_parser.get_triage(out)
         print("triage:", triage)
         # Write the callid and transcript to a json
+
+        med_input = [int(info["age"]) / 100]
+        print(med_input)
+        med_input.append(1 if info["gender"] == "male" else 0)
+        med_input = med_input + cc_list.tolist() + pmh_list.tolist()
+        to_admit, meds = transcript_parser.get_meds(med_input)
+        to_admit = to_admit or triage == 1
+        print("admit:", to_admit)
+        print("meds:", meds)
+
         with open(transcript_path, "w") as file:
-            file.write(json.dumps({"callid": subdir, "transcript": transcript}))
+            file.write(json.dumps({
+                "callid": subdir,
+                "transcript": transcript,
+                "age": int(info["age"]),
+                "gender": info["gender"],
+                "complaints": [x for x in out if x[:3] == "cc_"],
+                "history": [x for x in out if x[:3] != "cc_"],
+                "triage": triage,
+                "meds": meds
+            }))
 
         return jsonify({'callid': subdir}), 200
     except Exception as e:

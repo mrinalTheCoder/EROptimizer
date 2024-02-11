@@ -4,7 +4,8 @@ from dotenv import load_dotenv
 import json
 import numpy as np
 from sentence_transformers import SentenceTransformer
-import math
+import numpy as np
+import tensorflow as tf
 
 load_dotenv()
 
@@ -33,6 +34,18 @@ for i in range(len(sev_words)):
 cc_sev_scores = list(np.max(cc_sev_scores, axis=1))
 pmh_sev_scores = list(np.mean(pmh_sev_scores, axis=1))
 
+med_model = tf.keras.Sequential([
+    tf.keras.layers.Input(483),
+    tf.keras.layers.Dense(300, activation="relu"),
+    tf.keras.layers.BatchNormalization(),
+    tf.keras.layers.Dense(200, activation="relu"),
+    tf.keras.layers.BatchNormalization(),
+    tf.keras.layers.Dense(100, activation="relu"),
+    tf.keras.layers.BatchNormalization(),
+    tf.keras.layers.Dense(49, activation="sigmoid")
+])
+med_model.load_weights("meds_model.h5")
+
 def get_max_cc_score(cc_indices):
     max = 0
     for i in cc_indices:
@@ -56,6 +69,10 @@ cc_cols = list(map(lambda x:x[:-1], cc_cols))
 with open("pmh_cols.txt", "r") as f:
     pmh_cols = f.readlines()
 pmh_cols = list(map(lambda x:x[:-1], pmh_cols))
+
+with open("med_cols.txt", "r") as f:
+    med_cols = f.readlines()
+med_cols = list(map(lambda x:x[:-1], med_cols))
 
 def parse_content(content_string):
     info = {}
@@ -100,7 +117,7 @@ def compute_similarity(user_cc, user_pmh):
                 output_pmhs[i] = 1
                 output_list.append(pmh_cols[i])
     
-    return output_list
+    return output_ccs, output_pmhs, output_list
 
 def get_triage(words):
     cc_words = []
@@ -133,6 +150,15 @@ def get_triage(words):
         return 4
     else:
         return 5
+
+def get_meds(inputs):
+    inputs = np.expand_dims(np.array(inputs), axis=0)
+    preds = med_model.predict(inputs)[0]
+    to_admit = preds[0] > 0.5
+    preds = preds[1:]
+    print(preds)
+    meds_list = [med_cols[i] for i in range(len(preds)) if preds[i] > 0.01]
+    return to_admit, meds_list
 
 if __name__ == "__main__":
     print(get_triage(['cc_cardiacarrest']))
