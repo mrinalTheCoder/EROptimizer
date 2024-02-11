@@ -24,11 +24,18 @@ const ClientComponent = () => {
 
     const getLocationPermissions = async () => {
       try {
-        await navigator.geolocation.getCurrentPosition(position => {
+        await navigator.geolocation.getCurrentPosition(async position => {
           const locationData = {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
           };
+
+          const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${locationData.latitude},${locationData.longitude}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`);
+          if (!response.ok) throw new Error('Failed to fetch address');
+          const data = await response.json();
+          locationData.address = data.results[0].formatted_address; 
+
+
           setUserLocation(locationData);
           console.log('User Location:', locationData);
           localStorage.setItem('userLocation', JSON.stringify(locationData));
@@ -37,6 +44,7 @@ const ClientComponent = () => {
         console.error('Location Permission Denied:', error);
       }
     };
+    
 
     getMicrophonePermissions();
     getLocationPermissions();
@@ -95,8 +103,8 @@ const ClientComponent = () => {
   return (
     <div className="client-container">
       <h2 className="h2">
-        Call.
-        <span style={{textDecoration: 'underline', color: 'red'}}><b>ER</b></span>
+        <span style={{ fontFamily: 'monospace', fontWeight: 'bold' }}>Call.</span>
+        <span style={{textDecoration: 'underline',fontFamily: 'monospace', color: 'red'}}><b>ER</b></span>
       </h2>
   
       <button className={`client-button record-button ${isRecording && 'recording'}`} onClick={isRecording ? stopRecording : startRecording} disabled={isBlocked}>
@@ -119,14 +127,14 @@ const ClientComponent = () => {
       </button>
   
       <WaveformComponent audioUrl={blobURL} />
-      <audio className="audio-player" src={blobURL} controls="controls" />
+      {/* <audio className="audio-player" src={blobURL} controls="controls" /> */}
   
       {userLocation && (
-        <div>
-          <p>User Location:</p>
-          <p>Latitude: {userLocation.latitude}</p>
-          <p>Longitude: {userLocation.longitude}</p>
-        </div>
+        <div className="location-container">
+        <p style={{ fontFamily: 'monospace', fontWeight: 'bold' }}>Location Identified:</p>
+        <p className="location-coordinates" style={{ fontFamily: 'monospace' }}>{userLocation.address}</p>
+        <p className="location-coordinates" style={{ fontFamily: 'monospace' }}>({userLocation.latitude}, {userLocation.longitude})</p>
+    </div>
       )}
     </div>
   );

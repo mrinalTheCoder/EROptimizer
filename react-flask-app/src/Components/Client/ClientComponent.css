@@ -74,4 +74,22 @@
     height: 50px;
     fill: #fff; /* White color for the icon */
   }
-  
+  .location-container {
+    background-color: #f2f2f2;
+    border: 1px solid #d3d3d3;
+    border-radius: 8px;
+    padding: 5px;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.location-container p {
+    margin: 5px 0;
+    color: #333;
+    font-size: 16px;
+}
+
+.location-coordinates {
+    font-weight: bold;
+    color: #007bff;
+}
