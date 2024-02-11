@@ -91,7 +91,6 @@ def gpt_response(query):
         ],
         temperature=0,
     )
-    print("received gpt response")
 
     response_json = json.loads(response.model_dump_json())
     content_string = response_json['choices'][0]['message']['content']
@@ -151,7 +150,7 @@ def get_triage(words):
     else:
         return 5
 
-def get_meds(inputs):
+def get_admit(inputs):
     inputs = np.expand_dims(np.array(inputs), axis=0)
     preds = med_model.predict(inputs)[0]
     to_admit = preds[0] > 0.5
@@ -160,5 +159,25 @@ def get_meds(inputs):
     meds_list = [med_cols[i] for i in range(len(preds)) if preds[i] > 0.015]
     return to_admit, meds_list
 
+def parse_med_content(content_string):
+    lines = content_string.split("\n")
+    med_list = []
+    for line in lines:
+        med_list.append(line.split('.')[1].strip().split('(')[0].strip())
+    return med_list
+
+def get_meds(symptoms):
+    response = client.chat.completions.create(
+        model=gpt_model,
+        messages=[
+            {"role": "system", "content": "Suppose a patient comes to the ER with the following symptoms. List the names of the drugs they will receive? No descriptions."},
+            {"role": "user", "content": symptoms},
+        ],
+        temperature=0,
+    )
+    response_json = json.loads(response.model_dump_json())
+    content_string = response_json['choices'][0]['message']['content']
+    return parse_med_content(content_string)
+
 if __name__ == "__main__":
-    print(get_triage(['cc_cardiacarrest']))
+    get_meds("heart attack, chest pain")

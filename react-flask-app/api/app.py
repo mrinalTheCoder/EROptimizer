@@ -68,8 +68,9 @@ def transcribe_audio():
         print(med_input)
         med_input.append(1 if info["gender"] == "male" else 0)
         med_input = med_input + cc_list.tolist() + pmh_list.tolist()
-        to_admit, meds = transcript_parser.get_meds(med_input)
+        to_admit, meds = transcript_parser.get_admit(med_input)
         to_admit = to_admit or triage == 1
+        meds = transcript_parser.get_meds(complaints_str)
         print("admit:", to_admit)
         print("meds:", meds)
 
@@ -81,6 +82,7 @@ def transcribe_audio():
                 "gender": info["gender"],
                 "complaints": [x for x in out if x[:3] == "cc_"],
                 "history": [x for x in out if x[:3] != "cc_"],
+                "admit": to_admit,
                 "triage": triage,
                 "meds": meds
             }))
