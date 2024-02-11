@@ -17,8 +17,8 @@ past_medical_history_str = json_data["Past Medical History"]
 current_complaints = [complaint.strip().lower() for complaint in complaints_str.split(",")]
 past_medical_history = [history.strip().lower() for history in past_medical_history_str.split(",")]
 
-print("Current Complaints:", current_complaints)
-print("Past Medical History:", past_medical_history)
+#print("Current Complaints:", current_complaints)
+#print("Past Medical History:", past_medical_history)
 
 #current_complaints = ["broken left arm"]
 #past_medical_history = ["Asthma", "Obesity"]
@@ -48,7 +48,7 @@ def compute_similarity(user_cc, user_pmh):
     for i in range(len(cc_embeddings)):
         for j in range(len(user_cc_embeddings)):
             sim_score = np.dot(user_cc_embeddings[j], cc_embeddings[i]) / (np.linalg.norm(user_cc_embeddings[j]) * np.linalg.norm(cc_embeddings[i]))
-            if(sim_score > 0.4):
+            if(sim_score > 0.5):
                 output_ccs[i] = 1
                 output_list.append(cc_cols[i])
     
@@ -76,6 +76,3 @@ def compute_similarity(user_cc, user_pmh):
 
 # col_embeddings_to_file(cc_cols, "cc_embeddings.npy")
 # col_embeddings_to_file(pmh_cols, "pmh_embeddings.npy")
-
-_, __, out = compute_similarity(current_complaints, past_medical_history)
-print(out)
