@@ -1,7 +1,11 @@
 ![banner](img/callER_banner.png)
-# EROptimizer
+# Call.ER
 
 A novel AI solution that reduced ER wait times by predicting the required drugs, priority level, and overnight admission status.
+
+***
+[Link to video demo](https://www.youtube.com/watch?v=cQycorWeCgM)
+***
 
 ## The Problem
 **The average wait time for the ER in the U.S. is approximately two hours and 25 minutes**
