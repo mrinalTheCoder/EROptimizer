@@ -1,32 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ClientComponent from './Components/Client/ClientComponent';
+import ServerComponent from './Components/Server/ServerComponent';
 
-function App() {
-  const [currentTime, setCurrentTime] = useState(0);
 
-  useEffect(() => {
-    fetch('http://127.0.0.1:5000/time').then(res => res.json()).then(data => {
-      setCurrentTime(data.time);
-    });
-  }, []);
-
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-       
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <p>The current time is {currentTime}.</p>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/client" element={<ClientComponent />} />
+        <Route path="/server" element={<ServerComponent />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
