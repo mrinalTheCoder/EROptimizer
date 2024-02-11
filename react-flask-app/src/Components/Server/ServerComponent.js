@@ -40,10 +40,13 @@ const ServerComponent = () => {
   return (
     <div>
       <AppBar position="static">
-        <Toolbar>
-          <img src={""} alt="Logo" style={{ marginRight: 10, height: 30 }} />
+      <Toolbar style={{ backgroundColor: "#3d405b" }}>
+          {/* <img src={"/secondary.png"} alt="Logo" style={{ marginRight: 10, height: 50 }} /> */}
           <Typography variant="h6" style={{ flexGrow: 1, textAlign: "center" }}>
-            Hospital Dashboard
+            <span style={{ color: 'white', fontSize: '40px' }}>[</span>
+            <span style={{ color: 'white', fontWeight: 'bold', fontSize: '40px' }}>CALL.</span>
+            <span style={{ color: 'red', fontWeight: 'bold', fontSize: '40px' }}>ER </span>
+            <span style={{ color: 'white', fontSize: '40px' }}>]</span>
           </Typography>
         </Toolbar>
       </AppBar>
