@@ -157,7 +157,7 @@ def get_meds(inputs):
     to_admit = preds[0] > 0.5
     preds = preds[1:]
     print(preds)
-    meds_list = [med_cols[i] for i in range(len(preds)) if preds[i] > 0.01]
+    meds_list = [med_cols[i] for i in range(len(preds)) if preds[i] > 0.015]
     return to_admit, meds_list
 
 if __name__ == "__main__":
