@@ -3,11 +3,10 @@ import CallItem from './Callitem';
 import MapItem from './MapItem';
 import './ServerSideComponent.css'; 
 
-
 const ServerComponent = () => {
     const [calls, setCalls] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-		const [activeCallerID, setActiveCallerID] = useState(null); // New state for active caller ID
+    const [activeCallerID, setActiveCallerID] = useState(null);
 
     const fetchCalls = async () => {
         try {
@@ -21,20 +20,19 @@ const ServerComponent = () => {
         setIsLoading(false);
     };
 
-	const toggleCallDetails = (callerID) => {
-			setActiveCallerID(activeCallerID === callerID ? null : callerID);
-	};
-
+    const toggleCallDetails = (callerID) => {
+        setActiveCallerID(activeCallerID === callerID ? null : callerID);
+    };
 
     useEffect(() => {
         fetchCalls();
-        const interval = setInterval(fetchCalls, 5000); // Fetch every 5 seconds
-        return () => clearInterval(interval); // Clean up
+        const interval = setInterval(fetchCalls, 5000);
+        return () => clearInterval(interval);
     }, []);
 
     return (
-			<div className="server-side-container">
-					<div className="calls-list">
+        <div className="server-side-container">
+            <div className="calls-list">
                 {isLoading ? (
                     <p>Loading calls...</p>
                 ) : calls.length > 0 ? (
@@ -51,11 +49,11 @@ const ServerComponent = () => {
                     <p>No calls yet</p>
                 )}
             </div>
-					<div className="map-container">
-							<MapItem />
-					</div>
-			</div>
-	);
+            <div className="map-container">
+                <MapItem />
+            </div>
+        </div>
+    );
 };
 
 export default ServerComponent;
