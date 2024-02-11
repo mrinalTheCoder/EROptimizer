@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import MicRecorder from "mic-recorder-to-mp3";
 import "./ClientComponent.css";
 import WaveformComponent from "./WaveformComponent.js";
+import sound1 from "./Prompt1.m4a";
+import sound2 from "./Prompt2.m4a";
+import sound3 from "./Prompt3.m4a";
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
 
@@ -97,9 +100,40 @@ const ClientComponent = () => {
         console.error("Failed to transcribe audio");
       }
     } catch (error) {
-      console.error("Error transcribing audio:", error);
+      console.error('Error transcribing audio:', error);
     }
   };
+
+  const playPromptAndRecord = () => {
+    const audio1 = new Audio(sound1);
+    const audio2 = new Audio(sound2);
+    const audio3 = new Audio(sound3);
+    
+    // Start recording immediately
+    startRecording();
+
+    // Play the first prompt
+    audio1.play();
+
+    // Play the second prompt after the first prompt is finished
+    audio1.addEventListener('ended', () => {
+      setTimeout(() => {
+        audio2.play();
+      }, 5000); 
+    });
+
+    // Play the third prompt after the second prompt is finished
+    audio2.addEventListener('ended', () => {
+      setTimeout(() => {
+        audio3.play();
+      }, 5000); 
+    });
+
+    // Stop recording after the third prompt finishes
+    audio3.addEventListener('ended', () => {
+        stopRecording();
+    });
+};
 
   return (
     <div className="client-container">
