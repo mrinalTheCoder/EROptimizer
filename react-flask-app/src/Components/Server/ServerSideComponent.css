@@ -13,8 +13,8 @@ html, body {
 }
 
 .calls-list {
-    flex: 1 1 33%; /* Take up 1/3 of the horizontal space */
-    overflow-y: auto; /* Scroll if content overflows */
+    flex: 1 1 50%; /* Take up 1/3 of the horizontal space */
+    overflow-y: scroll; /* Scroll if content overflows */
     border-right: 1px solid #ccc;
     padding-right: 20px;
     margin-right: 20px;
@@ -40,7 +40,7 @@ html, body {
 
 
 .map-container {
-    flex: 2 1 66%; /* Take up 2/3 of the horizontal space */
+    flex: 2 1 50%; /* Take up 2/3 of the horizontal space */
     display: flex;
     flex-direction: column;
     align-items: center; /* Center items vertically */
@@ -70,7 +70,7 @@ html, body {
     color: white;
     padding: 10px;
     border-left: 3px solid #4CAF50;
-    overflow-y: auto; /* Make it scrollable */
+    overflow-y: scroll; /* Make it scrollable */
 
 }
 .call-item.active {

@@ -74,13 +74,16 @@ def transcribe_audio():
         print("admit:", to_admit)
         print("meds:", meds)
 
+        complaints = [x for x in out if x[:3] == "cc_"]
+        complaints = [item.replace("cc_", "").capitalize() for item in complaints]
+
         with open(transcript_path, "w") as file:
             file.write(json.dumps({
                 "callid": subdir,
                 "transcript": transcript,
                 "age": age,
                 "gender": info["gender"],
-                "complaints": [x for x in out if x[:3] == "cc_"],
+                "complaints": complaints,
                 "history": [x for x in out if x[:3] != "cc_"],
                 "admit": to_admit,
                 "triage": triage,
@@ -99,7 +102,7 @@ def list_transcripts():
         base_dir = "whisper_out"
         callids = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d))]
         transcripts = []
-        callids.sort()
+        callids.sort(reverse=True)
         for callid in callids:
             transcript_path = os.path.join(base_dir, callid, "transcript.json")
             if os.path.exists(transcript_path):
