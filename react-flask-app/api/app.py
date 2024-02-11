@@ -54,10 +54,10 @@ def transcribe_audio():
         current_complaints = [complaint.strip().lower() for complaint in complaints_str.split(",")]
         past_medical_history = [history.strip().lower() for history in past_medical_history_str.split(",")]
         
-        ccs, pmhs, out = transcript_parser.compute_similarity(current_complaints, past_medical_history)
-        print(ccs)
-        print(pmhs)
+        out = transcript_parser.compute_similarity(current_complaints, past_medical_history)
         print(out)
+        triage = transcript_parser.get_triage(out)
+        print("triage:", triage)
         # Write the callid and transcript to a json
         with open(transcript_path, "w") as file:
             file.write(json.dumps({"callid": subdir, "transcript": transcript}))
