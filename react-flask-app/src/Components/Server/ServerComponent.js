@@ -41,13 +41,16 @@ const ServerComponent = () => {
     <div>
       <AppBar position="static">
       <Toolbar style={{ backgroundColor: "#3d405b" }}>
-          {/* <img src={"/secondary.png"} alt="Logo" style={{ marginRight: 10, height: 50 }} /> */}
+          <img src={"/logo.jpeg"} alt="Logo" style={{ marginRight: 0, height: 60 , padding: 5}} />
           <Typography variant="h6" style={{ flexGrow: 1, textAlign: "center" }}>
             <span style={{ color: 'white', fontSize: '40px' }}>[</span>
             <span style={{ color: 'white', fontWeight: 'bold', fontSize: '40px' }}>CALL.</span>
             <span style={{ color: 'red', fontWeight: 'bold', fontSize: '40px' }}>ER </span>
             <span style={{ color: 'white', fontSize: '40px' }}>]</span>
           </Typography>
+          <a href="https://github.com/mrinalTheCoder/EROptimizer" target="_blank" rel="noopener noreferrer">
+            <img src={"/github.png"} alt="GitHub Logo" style={{ marginRight: 0, height: 50, padding: 5 }} />
+          </a>
         </Toolbar>
       </AppBar>
       <div className="server-side-container">
