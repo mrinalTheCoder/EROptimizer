@@ -11,3 +11,4 @@ training/cleaned_data.csv
 training/meds_admission.keras
 react-flask-app/api/whisper_out
 OpenAIEmbeddings/.env
+react-flask-app/.env

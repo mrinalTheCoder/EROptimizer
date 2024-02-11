@@ -1,7 +1,14 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
 .server-side-container {
     display: flex;
     height: 100vh;
-    background-color: #f2f2f2;
+    background-color: #b2a9a9;
     padding: 20px;
 }
 
